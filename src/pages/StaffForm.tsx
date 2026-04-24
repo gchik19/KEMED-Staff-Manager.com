@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Button } from "../components/ui/button";
@@ -36,6 +36,16 @@ export function StaffForm() {
     school_id: user?.school_id || ""
   });
   
+  const [schools, setSchools] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (user?.role === "SUPER_ADMIN") {
+       fetch("/api/schools", { headers: { Authorization: `Bearer ${token}` } })
+         .then(res => res.json())
+         .then(setSchools);
+    }
+  }, [user, token]);
+
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const validateField = (name: string, value: any, currentErrors: any = errors) => {
@@ -236,8 +246,17 @@ export function StaffForm() {
 
             {user?.role === "SUPER_ADMIN" && (
                <div className="space-y-2">
-                 <Label htmlFor="school_id" className="font-semibold text-slate-700 text-[#004d40]">School ID (SuperAdmin Override)</Label>
-                 <Input id="school_id" type="number" value={formData.school_id} onChange={handleChange} required className="shadow-sm focus-visible:ring-[#004d40] border-[#004d40]/30" />
+                 <Label htmlFor="school_id" className="font-semibold text-slate-700 text-[#004d40]">School (SuperAdmin Override) <span className="text-red-500">*</span></Label>
+                 <select
+                    id="school_id"
+                    required
+                    className="flex h-10 w-full items-center justify-between rounded-md border border-[#004d40]/30 bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#004d40] disabled:cursor-not-allowed disabled:opacity-50"
+                    value={formData.school_id}
+                    onChange={handleChange}
+                 >
+                    <option value="">Select a School</option>
+                    {schools.map(s => <option key={s.id} value={s.id}>{s.name} (ID: {s.id})</option>)}
+                 </select>
                </div>
             )}
 

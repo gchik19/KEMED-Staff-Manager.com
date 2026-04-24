@@ -12,6 +12,7 @@ export function Layout() {
   const navigation = [
     { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard, roles: ["SUPER_ADMIN", "ADMIN"] },
     { name: "Staff Records", href: "/staff", icon: UsersIcon, roles: ["SUPER_ADMIN", "ADMIN", "HEAD_TEACHER"] },
+    { name: "Schools", href: "/schools", icon: Landmark, roles: ["SUPER_ADMIN", "ADMIN"] },
     { name: "User Management", href: "/users", icon: UsersRound, roles: ["SUPER_ADMIN"] },
   ];
 

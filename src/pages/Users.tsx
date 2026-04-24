@@ -43,7 +43,7 @@ export function Users() {
       .then(res => res.json())
       .then(setUsers);
       
-    fetch("/api/users/schools", { headers: { Authorization: `Bearer ${token}` } })
+    fetch("/api/schools", { headers: { Authorization: `Bearer ${token}` } })
       .then(res => res.json())
       .then(setSchools);
   }, [token]);
